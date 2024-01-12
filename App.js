@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import Counter from "./components/counter";
+import ClassCounter from "./components/ClassComponent";
 
 function App() {
   //const [likes, setLikes] = useState(8)
@@ -23,9 +24,15 @@ function App() {
      // <button onClick={increment}>Increment</button>
       //<button onClick={decrement}>Decrement</button>    
      //</div>
+
+    //<div className="App">
+    //  <Counter/>
+    //</div>
+
     <div className="App">
-      <Counter/>
+      <ClassCounter/>
     </div>
+
   );
 }
 
