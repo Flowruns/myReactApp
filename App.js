@@ -1,6 +1,9 @@
 import React, {useState} from "react";
 import Counter from "./components/counter";
 import ClassCounter from "./components/ClassComponent";
+// Импортируем цсс стили
+import './styles/App.css'
+import PostItem from "./components/PostItem";
 
 function App() {
   //const [likes, setLikes] = useState(8)
@@ -29,8 +32,18 @@ function App() {
     //  <Counter/>
     //</div>
 
+    //<div className="App">
+    //  <ClassCounter/>
+    //</div>
+
+    //<div className="App">
+    //  <ClassCounter/>
+    //</div>
+
+    // -----  Добавляем класс на элемент
+    // передаем в него данные с помощью пропсов
     <div className="App">
-      <ClassCounter/>
+      <PostItem post = {{id: 1, title: 'JavaScript', body: 'Description'}}/>  
     </div>
 
   );
