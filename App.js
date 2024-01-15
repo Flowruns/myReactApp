@@ -8,7 +8,16 @@ import PostItem from "./components/PostItem";
 function App() {
   //const [likes, setLikes] = useState(8)
   // двустороннее связывание (связывание состояния со значением, которое находится в инпуте)
-  const [value,setValue] = useState('текст в инпуте')
+  //const [value,setValue] = useState('текст в инпуте')
+
+  // Состояние с массивом постов
+  // в useState передаем массив объектов
+  const [posts,setPosts] = useState([
+    {id: 1, title: 'JavaScript', body: 'Description'},
+    {id: 2, title: 'JavaScript 2', body: 'Description'},
+    {id: 3, title: 'JavaScript 3', body: 'Description'}
+  ]
+  )
   
   //function increment() {
   //  setLikes (likes + 1);
@@ -42,8 +51,18 @@ function App() {
 
     // -----  Добавляем класс на элемент
     // передаем в него данные с помощью пропсов
+    //<div className="App">
+    //  <PostItem post = {{id: 1, title: 'JavaScript', body: 'Description'}}/>  
+    //</div>
+
+    // преобразуем массив обычных элементов в массив react - объектов с помощью функции .map()
+    // получаем новый массив
+    // .map() передаем колбэк, где каждый объект поста преобразовываем в react-элемент
+    // для каждого поста в массиве отрисовываем <PostItem/> и как пропс передаем туда объект
     <div className="App">
-      <PostItem post = {{id: 1, title: 'JavaScript', body: 'Description'}}/>  
+      {posts.map(post => 
+        <PostItem post = {post} key = {post.id}/>
+        )} 
     </div>
 
   );
