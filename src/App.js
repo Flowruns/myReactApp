@@ -35,64 +35,80 @@ function App() {
    // setLikes (likes - 1);
   //}
     const [title, setTitle] = useState('')
-    const bodyInputRef = useRef();
+    const [body, setBody] = useState('')
+    // const bodyInputRef = useRef();
     const addNewPost = (e) => {
-        e.preventDefault()
-        console.log(title)
-        console.log(bodyInputRef.current.value)
+         e.preventDefault()
+        // console.log(title)
+        // console.log(bodyInputRef.current.value)
+        
+        // создаем новый объект, передаем заголовок и тело
+        const newPost = {
+            // айди формируем как текущую дату
+             id: Date.now(),
+            title,
+            body
+        }
+        // передаем старый массив и в конец добавляем новый пост
+        setPosts([...posts, newPost])
+        // очищение инпутов после добавления поста (обнуление состояния)
+        setTitle('')
+        setBody('')
     }
   return (
-     /*//<div className="App">
-     // <h1>{likes}</h1>
-     // <h1>{value}</h1>
-     // <input type = 'text' 
-      //value = {value}
-     // onChange={event => setValue(event.target.value)}/>
-     // <button onClick={increment}>Increment</button>
-      //<button onClick={decrement}>Decrement</button>    
-     //</div>
-
-    //<div className="App">
+    //  <div className="App">
+    //  <h1>{likes}</h1>
+    //  <h1>{value}</h1>
+    //  <input type = 'text' 
+    //   value = {value}
+    //  onChange={event => setValue(event.target.value)}/>
+    //  <button onClick={increment}>Increment</button>
+    //   <button onClick={decrement}>Decrement</button>    
+    //  </div>
+    //
+    // <div className="App">
     //  <Counter/>
-    //</div>
-
-    //<div className="App">
+    // </div>
+    //
+    // <div className="App">
     //  <ClassCounter/>
-    //</div>
-
-    //<div className="App">
+    // </div>
+    //
+    // <div className="App">
     //  <ClassCounter/>
-    //</div>
-
+    // </div>
+    //
     // -----  Добавляем класс на элемент
     // передаем в него данные с помощью пропсов
-    //<div className="App">
+    // <div className="App">
     //  <PostItem post = {{id: 1, title: 'JavaScript', body: 'Description'}}/>  
-    //</div>
-
+    // </div>
+    //
     // -----  Преобразуем массив обычных элементов в массив react - объектов с помощью функции .map()
     // получаем новый массив
     // .map() передаем колбэк, где каждый объект поста преобразовываем в react-элемент
     // для каждого поста в массиве отрисовываем <PostItem/> и как пропс передаем туда объект
-    //<div className="App">
+    // <div className="App">
     //  <h1 style = {{textAlign: "center"}}>Список постов</h1>
     //  {posts.map(post => 
     //    <PostItem post = {post} key = {post.id}/>
     //    )} 
-    //</div>*/
+    // </div>
       
     <div className="App">
       <form>
           {/*это управляемый компонент!*/}
         <MyInput 
             value={title}
-            opnChange={e => setTitle(e.target.value)}
+            onChange={e => setTitle(e.target.value)}
             type="text" 
             placeholder="Название поста"
         />
           {/*это НЕ управляемый компонент!*/}
         <MyInput
-            ref = {bodyInputRef}    
+            // ref = {bodyInputRef} 
+            value={body}
+            onChange={e => setBody(e.target.value)}
             type="text" 
             placeholder="Описание поста"
         />
