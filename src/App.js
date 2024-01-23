@@ -7,6 +7,7 @@ import PostItem from "./components/PostItem";
 import PostList from "./components/PostList";
 import MyButton from "./components/UI/button/MyButton";
 import MyInput from "./components/UI/input/MyInput";
+import PostForm from "./components/PostForm";
 
 function App() {
   //const [likes, setLikes] = useState(8)
@@ -20,6 +21,14 @@ function App() {
     {id: 2, title: 'JavaScript 2', body: 'Description'},
     {id: 3, title: 'JavaScript 3', body: 'Description'}
   ])
+    
+    const createPost = (newPost) => {
+        setPosts([...posts, newPost])  
+    }
+    // Получаем Post из дочернего элемента
+    const removePost = (post) => {
+        setPosts(posts.filter(p => p.id !== post.id))  
+    }
 
   /*const [posts2,setPosts2] = useState([
     {id: 1, title: 'Pyton', body: 'Description'},
@@ -34,27 +43,31 @@ function App() {
   //function decrement() {
    // setLikes (likes - 1);
   //}
-    const [title, setTitle] = useState('')
-    const [body, setBody] = useState('')
-    // const bodyInputRef = useRef();
+  //   const [title, setTitle] = useState('')
+  //   const [body, setBody] = useState('')
+    
+    /* const bodyInputRef = useRef();
     const addNewPost = (e) => {
          e.preventDefault()
-        // console.log(title)
-        // console.log(bodyInputRef.current.value)
+         console.log(title)
+         console.log(bodyInputRef.current.value)
         
-        // создаем новый объект, передаем заголовок и тело
-        const newPost = {
-            // айди формируем как текущую дату
-             id: Date.now(),
-            title,
-            body
-        }
-        // передаем старый массив и в конец добавляем новый пост
-        setPosts([...posts, newPost])
-        // очищение инпутов после добавления поста (обнуление состояния)
-        setTitle('')
-        setBody('')
-    }
+        // =====  создаем новый объект, передаем заголовок и тело =====
+         const newPost = {
+        // айди формируем как текущую дату
+              id: Date.now(),
+             title,
+             body
+         }
+        // ===== передаем старый массив и в конец добавляем новый пост =====
+         setPosts([...posts, newPost])
+        // создаем новый объект прямо в массиве, развернуть в него инф. из поста и добавить айди
+        setPosts([...posts, {...post, id: Date.now()}])
+        // ===== очищение инпутов после добавления поста (обнуление состояния) ====
+         setTitle('')
+         setBody('')
+        setPost({title: '', body: ''})
+    }*/
   return (
     //  <div className="App">
     //  <h1>{likes}</h1>
@@ -96,25 +109,16 @@ function App() {
     // </div>
       
     <div className="App">
-      <form>
-          {/*это управляемый компонент!*/}
-        <MyInput 
-            value={title}
-            onChange={e => setTitle(e.target.value)}
-            type="text" 
-            placeholder="Название поста"
-        />
-          {/*это НЕ управляемый компонент!*/}
-        <MyInput
-            // ref = {bodyInputRef} 
-            value={body}
-            onChange={e => setBody(e.target.value)}
-            type="text" 
-            placeholder="Описание поста"
-        />
-        <MyButton onClick={addNewPost}>Создать пост</MyButton>
-      </form>
-      <PostList posts = {posts} title = {"Посты про JS"}/>  
+        <PostForm create = {createPost}/>
+        {posts.length !== 0
+            ? 
+            <PostList remove = {removePost} posts = {posts} title = {"Посты про JS"}/>
+            : 
+            <h1 style={{textAlign: 'center'}}>
+                Посты не найдены!
+            </h1>
+        }
+         
     </div>
   );
 }
