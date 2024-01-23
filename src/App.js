@@ -42,7 +42,7 @@ function App() {
         console.log(bodyInputRef.current.value)
     }
   return (
-     //<div className="App">
+     /*//<div className="App">
      // <h1>{likes}</h1>
      // <h1>{value}</h1>
      // <input type = 'text' 
@@ -79,9 +79,8 @@ function App() {
     //  {posts.map(post => 
     //    <PostItem post = {post} key = {post.id}/>
     //    )} 
-    //</div>
+    //</div>*/
       
-    
     <div className="App">
       <form>
           {/*это управляемый компонент!*/}
@@ -91,11 +90,12 @@ function App() {
             type="text" 
             placeholder="Название поста"
         />
-        {/*<MyInput*/}
-        {/*    ref = {bodyInputRef}    */}
-        {/*    type="text" */}
-        {/*    placeholder="Описание поста"*/}
-        {/*/>*/}
+          {/*это НЕ управляемый компонент!*/}
+        <MyInput
+            ref = {bodyInputRef}    
+            type="text" 
+            placeholder="Описание поста"
+        />
         <MyButton onClick={addNewPost}>Создать пост</MyButton>
       </form>
       <PostList posts = {posts} title = {"Посты про JS"}/>  
@@ -104,3 +104,4 @@ function App() {
 }
 
 export default App;
+// 51:36
