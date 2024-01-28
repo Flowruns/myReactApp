@@ -10,6 +10,7 @@ import MyInput from "./components/UI/input/MyInput";
 import PostForm from "./components/PostForm";
 import MySelect from "./components/UI/select/MySelect";
 import PostFilter from "./components/PostFilter";
+import MyModal from "./components/UI/MyModal/MyModal";
 
 function App() {
   //const [likes, setLikes] = useState(8)
@@ -25,6 +26,7 @@ function App() {
   ])
     
     const [filter, setFilter] = useState({sort: '', query: ''})
+    const [modal, setModal] = useState(false);
     
     const sortedPosts = useMemo(() =>{
         if(filter.sort) {
@@ -38,7 +40,8 @@ function App() {
         return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query))
     }, [filter.query, sortedPosts])
     const createPost = (newPost) => {
-        setPosts([...posts, newPost])  
+        setPosts([...posts, newPost]) 
+        setModal(false)
     }
     // Получаем Post из дочернего элемента
     const removePost = (post) => {
@@ -124,7 +127,13 @@ function App() {
     // </div>
       
     <div className="App">
-        <PostForm create = {createPost}/>
+        <MyButton style={{marginTop: 30}} onClick={() => setModal(true)}>
+            Создать пользователя
+        </MyButton>
+        <MyModal visible={modal} setVisible={setModal}>
+            <PostForm create = {createPost}/>
+        </MyModal>
+        
         <hr style={{margin: '15px 0'}}/>
         <PostFilter
             filter={filter}
