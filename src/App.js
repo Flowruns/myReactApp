@@ -1,4 +1,4 @@
-import React, {useMemo, useState, useRef} from "react";
+import React, {useMemo, useState, useRef, useEffect} from "react";
 import Counter from "./components/counter";
 import ClassCounter from "./components/ClassComponent";
 // Импортируем цсс стили
@@ -11,7 +11,10 @@ import PostForm from "./components/PostForm";
 import MySelect from "./components/UI/select/MySelect";
 import PostFilter from "./components/PostFilter";
 import MyModal from "./components/UI/MyModal/MyModal";
-
+import { usePosts } from './hooks/usePosts';
+import axios from 'axios';
+import PostService from "./API/PostService";
+import Loader from "./components/UI/Loader/Loader";
 function App() {
   //const [likes, setLikes] = useState(8)
   // двустороннее связывание (связывание состояния со значением, которое находится в инпуте)
@@ -19,29 +22,32 @@ function App() {
 
   // Состояние с массивом постов
   // в useState передаем массив объектов
-  const [posts,setPosts] = useState([
-    {id: 1, title: 'JavaScript', body: 'Первый пост'},
-    {id: 2, title: 'JavaScript 2', body: '2 пост'},
-    {id: 3, title: 'JavaScript 3', body: 'Третий пост'}
-  ])
+  const [posts,setPosts] = useState([])
     
     const [filter, setFilter] = useState({sort: '', query: ''})
     const [modal, setModal] = useState(false);
+    const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
+    const [fetchPosts, isPostsLoading, postError] = useFetching(async() => {
+        const posts = await PostService.getAll();
+        setPosts();
+    })
     
-    const sortedPosts = useMemo(() =>{
-        if(filter.sort) {
-            return [...posts].sort((a,b) => a[filter.sort].localeCompare(b[filter.sort]))
-        }
-        return posts;
-        
-    }, [filter.sort, posts])
-    
-    const sortedAndSearchedPosts = useMemo(() => {
-        return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query))
-    }, [filter.query, sortedPosts])
+    useEffect(() => {
+        fetchPosts()
+    }, [])
     const createPost = (newPost) => {
         setPosts([...posts, newPost]) 
         setModal(false)
+    }
+    
+    async function fetchPosts() {
+        setIsPostsLoading(true);
+        setTimeout(async () => {
+            const posts = await PostService.getAll();
+            setPosts(posts)
+            setIsPostsLoading(false); 
+        }, 1000)
+        
     }
     // Получаем Post из дочернего элемента
     const removePost = (post) => {
@@ -127,6 +133,7 @@ function App() {
     // </div>
       
     <div className="App">
+        <button onClick={fetchPosts}>GET POSTS</button>
         <MyButton style={{marginTop: 30}} onClick={() => setModal(true)}>
             Создать пользователя
         </MyButton>
@@ -139,9 +146,13 @@ function App() {
             filter={filter}
             setFilter={setFilter}
         />
-        
-        <PostList remove = {removePost} posts = {sortedAndSearchedPosts} title = {"Посты про JS"}/>
-        
+        {postError &&
+            <h1>Произошла ошибка ${postError}</h1>
+        }
+        {isPostsLoading
+            ? <div style={{display: 'flex', justifyContent: 'center', marginTop: 50}}><Loader/></div>
+        : <PostList remove = {removePost} posts = {sortedAndSearchedPosts} title = {"Посты про JS"}/>
+        }
     </div>
   );
 }
