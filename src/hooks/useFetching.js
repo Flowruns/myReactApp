@@ -1,13 +1,14 @@
-﻿export const UseFetching = (callback) => {
+﻿import {useState} from "react";
+export const UseFetching = (callback) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     
     // Самый встречающийся кейс - обработка индикатора загрузки
     // обработка ошибки и выполнение колбэка
-    const fetching = async ()=> {
+    const fetching = async (...args)=> {
         try {
             setIsLoading(true)
-            await callback()
+            await callback(...args)
         } catch (e) {
             setError(e.message);
         } finally {
