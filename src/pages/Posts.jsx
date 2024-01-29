@@ -1,8 +1,8 @@
 ﻿import React, {useEffect, useRef, useState} from 'react';
 import PostService from "../API/PostService";
 import {usePosts} from "../hooks/usePosts";
-import {useFetching} from "../hooks/useFetching";
-import {getPageCount} from "../components/utils/pages";
+import {UseFetching} from "../hooks/useFetching";
+import {getPageCount} from "../utils/pages";
 import MyButton from "../components/UI/button/MyButton";
 import PostForm from "../components/PostForm";
 import MyModal from "../components/UI/MyModal/MyModal";
@@ -10,7 +10,7 @@ import PostFilter from "../components/PostFilter";
 import PostList from "../components/PostList";
 import Loader from "../components/UI/Loader/Loader";
 import Pagination from "../components/UI/pagination/Pagination";
-//import {useObserver} from "../hooks/useObserver";
+import {useObserver} from "../hooks/useObserver";
 import MySelect from "../components/UI/select/MySelect";
 
 
@@ -24,7 +24,7 @@ function Posts() {
     const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
     const lastElement = useRef()
 
-    const [fetchPosts, isPostsLoading, postError] = useFetching(async (limit, page) => {
+    const [fetchPosts, isPostsLoading, postError] = UseFetching(async (limit, page) => {
         const response = await PostService.getAll(limit, page);
         setPosts([...posts, ...response.data])
         const totalCount = response.headers['x-total-count']
